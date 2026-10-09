@@ -1,20 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>OMG You Said Yes! 💖</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Be My Valentine ❤️</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(45deg, #ff6b6b, #feca57, #ff9ff3, #54a0ff);
+      background: linear-gradient(
+        45deg, #ff6b6b, #feca57, #ff9ff3, #54a0ff
+      );
       background-size: 400% 400%;
       animation: gradientShift 8s ease infinite;
-      height: 100vh;
+      min-height: 100vh;
+      margin: 0;
+      padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin: 0;
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     @keyframes gradientShift {
@@ -23,148 +32,642 @@
       100% { background-position: 0% 50%; }
     }
 
-    .celebration {
+    /* PAGE VISIBILITY */
+
+    .page {
+      width: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
       text-align: center;
+    }
+
+    .page.active {
+      display: flex;
+    }
+
+    /* VALENTINE QUESTION PAGE */
+
+    .card {
+      background: white;
+      padding: 30px 20px;
+      border-radius: 20px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 380px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin: 0 0 20px;
+      color: #ff4d6d;
+      font-size: 1.7rem;
+    }
+
+    .bunny {
+      font-size: 80px;
+      margin: 20px 0;
+      display: inline-block;
+      animation: adorableBounce 2s ease-in-out infinite;
+      transition: transform 0.4s ease;
+    }
+
+    @keyframes adorableBounce {
+      0%, 100% {
+        transform: translateY(0) scale(1) rotate(0deg);
+      }
+      25% {
+        transform: translateY(-8px) scale(1.05) rotate(-2deg);
+      }
+      50% {
+        transform: translateY(-12px) scale(1.1) rotate(0deg);
+      }
+      75% {
+        transform: translateY(-8px) scale(1.05) rotate(2deg);
+      }
+    }
+
+    .bunny-excited {
+      animation: superExcited 0.8s ease-in-out;
+    }
+
+    @keyframes superExcited {
+      0% { transform: scale(1) rotate(0); }
+      20% { transform: scale(1.3) rotate(-15deg); }
+      40% { transform: scale(0.9) rotate(15deg); }
+      60% { transform: scale(1.4) rotate(-10deg); }
+      80% { transform: scale(1.1) rotate(5deg); }
+      100% { transform: scale(1) rotate(0); }
+    }
+
+    .bunny-still {
+      animation: none !important;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .btn-box {
+      flex: 1;
+      min-width: 0;
+      height: 65px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    button {
+      padding: 12px 18px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      max-width: 100%;
+    }
+
+    button:hover {
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #yesBtn {
+      background: #ff4d6d;
       color: white;
+      position: relative;
+      z-index: 2;
+      transform-origin: center;
+    }
+
+    #yesBtn:hover {
+      background: #ff3355;
+    }
+
+    #noBtn {
+      background: #ccc;
+      color: #333;
+      position: relative;
+      z-index: 1;
+    }
+
+    #noBtn:hover {
+      background: #bbb;
+    }
+
+    #message {
+      width: 100%;
+    }
+
+    .success {
+      margin-top: 20px;
+      font-size: 1.4rem;
+      color: #ff4d6d;
+      font-weight: bold;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .heart-particle {
+      position: absolute;
+      bottom: 15px;
+      left: 50%;
+      font-size: 22px;
+      pointer-events: none;
+      z-index: 5;
+      animation: floatUp 2s ease-out forwards;
+    }
+
+    @keyframes floatUp {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, 0) scale(0.5);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(
+          calc(-50% + var(--drift, 0px)), -150px
+        ) scale(1.3);
+      }
+    }
+
+    /* CELEBRATION PAGE */
+
+    .celebration {
+      color: white;
+      width: 100%;
+      max-width: 650px;
+      padding: 20px 10px;
       animation: zoomIn 1s ease-out;
     }
 
     @keyframes zoomIn {
-      0% { transform: scale(0); opacity: 0; }
-      100% { transform: scale(1); opacity: 1; }
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
     }
 
     .title {
-      font-size: 4rem;
+      font-size: clamp(2rem, 8vw, 4rem);
+      font-weight: bold;
       margin-bottom: 20px;
-      animation: bounce 2s infinite;
+      animation: titleBounce 1.5s infinite;
+      text-shadow: 2px 3px 8px rgba(0, 0, 0, 0.15);
+    }
+
+    @keyframes titleBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
     }
 
     .hearts {
-      font-size: 6rem;
+      font-size: clamp(3rem, 12vw, 6rem);
       animation: pulse 1.5s infinite;
     }
 
     @keyframes pulse {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-    }
-
-    .floating-heart {
-      position: absolute;
-      font-size: 2rem;
-      animation: float 3s ease-in-out infinite;
-      pointer-events: none;
+      50% { transform: scale(1.15); }
     }
 
     #letterBtn {
       background: #ff9a56;
       color: white;
-      padding: 15px 30px;
-      font-size: 18px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
+      padding: 15px 25px;
+      font-size: 25px;
       margin-top: 30px;
-      transition: all 0.3s ease;
     }
 
     #letterBtn:hover {
       background: #ff8533;
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 
     #homeBtn {
       background: #54a0ff;
       color: white;
-      padding: 12px 25px;
-      font-size: 16px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      margin-top: 20px;
-      transition: all 0.3s ease;
+      padding: 15px 25px;
+      font-size: 22px;
+      margin-top: 30px;
+      margin-left: 10px;
     }
 
     #homeBtn:hover {
       background: #3742fa;
       transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 
     .love-letter {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.96);
       border: 2px solid #ff4d6d;
       border-radius: 15px;
       padding: 25px;
-      margin-top: 20px;
+      margin: 25px auto 0;
       font-style: italic;
       color: #333;
-      animation: fadeIn 0.8s ease;
-      max-width: 400px;
+      line-height: 1.7;
       text-align: left;
+      max-width: 420px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      animation: fadeIn 0.8s ease;
+    }
+
+    .love-letter h2 {
+      color: #ff4d6d;
+      text-align: center;
+      margin-top: 0;
     }
 
     @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    @keyframes float {
-      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    .floating-heart {
+      position: fixed;
+      bottom: -50px;
+      font-size: 2rem;
+      pointer-events: none;
+      z-index: 10;
+      animation: floatingHeart 4s linear forwards;
+    }
+
+    @keyframes floatingHeart {
+      0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+      }
       10% { opacity: 1; }
       90% { opacity: 1; }
-      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+      100% {
+        transform: translateY(-120vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 24px 15px;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      .bunny {
+        font-size: 65px;
+      }
+
+      .buttons {
+        gap: 10px;
+      }
+
+      .btn-box {
+        height: 70px;
+      }
+
+      button {
+        padding: 12px 10px;
+        font-size: 15px;
+      }
+
+      .love-letter {
+        padding: 18px;
+        font-size: 15px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+      }
     }
   </style>
 </head>
+
 <body>
-  <div class="celebration">
-    <div class="title">OMG YOU SAID YES!</div>
-    <div class="hearts">💖💕💖</div>
-    <button id="letterBtn">💌</button>
-    <button id="homeBtn">🏠</button>
-    <div id="message"></div>
-  </div>
+
+  <!-- PAGE 1: VALENTINE QUESTION -->
+
+  <section id="questionPage" class="page active">
+    <div class="card">
+
+      <h1>Will you be my Valentine? 💘</h1>
+
+      <div id="bunny" class="bunny">🐰💕</div>
+
+      <div class="buttons" id="buttons">
+
+        <div class="btn-box">
+          <button id="yesBtn">Yes 💖</button>
+        </div>
+
+        <div class="btn-box">
+          <button id="noBtn">No 😢</button>
+        </div>
+
+      </div>
+
+      <div id="message" aria-live="polite"></div>
+
+    </div>
+  </section>
+
+
+  <!-- PAGE 2: CELEBRATION -->
+
+  <section id="celebrationPage" class="page">
+    <div class="celebration">
+
+      <div class="title">OMG YOU SAID YES!</div>
+
+      <div class="hearts">💖💕💖</div>
+
+      <p style="font-size: 1.3rem;">
+        You just made me the happiest person ever! 🥹❤️
+      </p>
+
+      <button id="letterBtn" aria-label="Open love letter">
+        💌 Open My Love Letter
+      </button>
+
+      <button id="homeBtn" aria-label="Return to home">
+        🏠 Home
+      </button>
+
+      <div id="letterContainer"></div>
+
+    </div>
+  </section>
+
 
   <script>
-    function createFloatingHeart() {
-      const heart = document.createElement('div');
-      heart.className = 'floating-heart';
-      heart.textContent = ['💖', '💕', '💗', '💘'][Math.floor(Math.random() * 4)];
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDelay = Math.random() * 2 + 's';
-      document.body.appendChild(heart);
-      
-      setTimeout(() => heart.remove(), 3000);
-    }
+    // ELEMENTS
 
-    // Create floating hearts continuously
-    setInterval(createFloatingHeart, 300);
+    const questionPage = document.getElementById("questionPage");
+    const celebrationPage = document.getElementById("celebrationPage");
 
-    // Love letter functionality
-    const letterBtn = document.getElementById("letterBtn");
+    const bunny = document.getElementById("bunny");
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+    const buttons = document.getElementById("buttons");
     const message = document.getElementById("message");
 
-    letterBtn.addEventListener("click", () => {
-      const loveMessage = `
-        <div class="love-letter">
-          Hey Love, 💕<br><br>
-          I just wanted to remind you how much you mean to me. 🌟<br><br>
-          Thank you for the laughs 😄, the quiet moments in between 🌙 and the late nights 🌃. No matter where life takes us 🛤️, you are always my favourite place to return to 🏠.<br><br>
-          I'm so grateful for you. Always 🙏<br><br>
-          I love you so much 💖
-        </div>
-      `;
-      message.innerHTML = loveMessage;
+    const letterBtn = document.getElementById("letterBtn");
+    const homeBtn = document.getElementById("homeBtn");
+    const letterContainer = document.getElementById("letterContainer");
+
+    let yesScale = 1;
+    let move = 0;
+    let textIndex = 0;
+    let celebrationStarted = false;
+    let heartInterval = null;
+
+    const noTexts = [
+      "Are you sure? 🥺",
+      "Think again 😭",
+      "Pleaseee 💔",
+      "Please say yes! 🙏",
+      "Why not? 😞",
+      "I need you! 😢",
+      "Don't break my heart 😢",
+      "Last chance 😳",
+      "I promise I'll be good! 😇",
+      "Give me a chance! 🙏",
+      "Please? 🥺"
+    ];
+
+
+    // SWITCH BETWEEN PAGES
+
+    function showPage(page) {
+      questionPage.classList.remove("active");
+      celebrationPage.classList.remove("active");
+
+      page.classList.add("active");
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    }
+
+
+    // HEART PARTICLES ON THE QUESTION PAGE
+
+    function createHeartParticle() {
+      const card = document.querySelector(".card");
+      const heart = document.createElement("div");
+
+      heart.className = "heart-particle";
+      heart.textContent = ["💖", "💕", "💗", "💘"][
+        Math.floor(Math.random() * 4)
+      ];
+
+      heart.style.left = (15 + Math.random() * 70) + "%";
+      heart.style.bottom = "15px";
+      heart.style.setProperty(
+        "--drift",
+        (Math.random() * 100 - 50) + "px"
+      );
+
+      card.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 2000);
+    }
+
+
+    // NO BUTTON
+
+    noBtn.addEventListener("click", () => {
+      if (celebrationStarted) return;
+
+      // Animate the bunny
+      bunny.classList.remove("bunny-excited");
+
+      // Restart the animation cleanly
+      void bunny.offsetWidth;
+      bunny.classList.add("bunny-excited");
+
+      setTimeout(() => {
+        bunny.classList.remove("bunny-excited");
+      }, 800);
+
+      // Move the bunny a little each time
+      move += 12;
+      bunny.style.transform = `translateX(${move}px)`;
+
+      // Grow the Yes button, with a sensible limit
+      yesScale = Math.min(yesScale + 0.12, 1.8);
+      yesBtn.style.transform = `scale(${yesScale})`;
+
+      // Change the No button text
+      noBtn.textContent = noTexts[textIndex % noTexts.length];
+      textIndex++;
+
+      // Add floating hearts
+      createHeartParticle();
     });
 
-    // Home button functionality
-    const homeBtn = document.getElementById("homeBtn");
-    homeBtn.addEventListener("click", () => {
-      window.location.href = 'velentine.html';
+
+    // YES BUTTON
+
+    yesBtn.addEventListener("click", () => {
+      if (celebrationStarted) return;
+
+      celebrationStarted = true;
+
+      bunny.classList.add("bunny-still");
+      bunny.textContent = "🐰💖";
+
+      buttons.style.display = "none";
+
+      message.innerHTML =
+        '<div class="success">Yaaay! I love you so much! ❤️</div>';
+
+      // Small celebration on the question card
+      for (let i = 0; i < 6; i++) {
+        setTimeout(createHeartParticle, i * 150);
+      }
+
+      // Switch to the celebration page in the same HTML file
+      setTimeout(() => {
+        showPage(celebrationPage);
+        startFloatingHearts();
+      }, 1200);
     });
+
+
+    // CONTINUOUS FLOATING HEARTS
+
+    function createFloatingHeart() {
+      if (!celebrationPage.classList.contains("active")) return;
+
+      const heart = document.createElement("div");
+
+      heart.className = "floating-heart";
+      heart.textContent = ["💖", "💕", "💗", "💘"][
+        Math.floor(Math.random() * 4)
+      ];
+
+      heart.style.left = Math.random() * 95 + "vw";
+      heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+      heart.style.fontSize = (1.2 + Math.random() * 1.5) + "rem";
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => heart.remove(), 5000);
+    }
+
+    function startFloatingHearts() {
+      if (heartInterval !== null) return;
+
+      createFloatingHeart();
+      heartInterval = setInterval(createFloatingHeart, 400);
+    }
+
+    function stopFloatingHearts() {
+      if (heartInterval !== null) {
+        clearInterval(heartInterval);
+        heartInterval = null;
+      }
+
+      document.querySelectorAll(".floating-heart").forEach(heart => {
+        heart.remove();
+      });
+    }
+
+
+    // LOVE LETTER BUTTON
+
+    letterBtn.addEventListener("click", () => {
+      // Toggle the letter open and closed
+      if (letterContainer.firstElementChild) {
+        letterContainer.innerHTML = "";
+        letterBtn.textContent = "💌 Open My Love Letter";
+        return;
+      }
+
+      const letter = document.createElement("div");
+      letter.className = "love-letter";
+
+      const heading = document.createElement("h2");
+      heading.textContent = "To My Favourite Person 💕";
+
+      const paragraphs = [
+        "Hey Love, 💕",
+
+        "I just wanted to remind you how much you mean to me. 🌟",
+
+        "Thank you for the laughs 😄, the quiet moments in between 🌙 and the late nights 🌃. No matter where life takes us 🛤️, you are always my favourite place to return to 🏠.",
+
+        "I'm so grateful for you. Always. 🙏",
+
+        "I love you so much. 💖"
+      ];
+
+      letter.appendChild(heading);
+
+      paragraphs.forEach((text, index) => {
+        const paragraph = document.createElement("p");
+        paragraph.textContent = text;
+        letter.appendChild(paragraph);
+      });
+
+      letterContainer.appendChild(letter);
+      letterBtn.textContent = "💌 Close My Love Letter";
+    });
+
+
+    // HOME BUTTON: RETURN TO THE QUESTION
+
+    homeBtn.addEventListener("click", () => {
+      stopFloatingHearts();
+
+      // Reset the question page
+      celebrationStarted = false;
+      yesScale = 1;
+      move = 0;
+      textIndex = 0;
+
+      bunny.textContent = "🐰💕";
+      bunny.style.transform = "";
+      bunny.classList.remove("bunny-still", "bunny-excited");
+
+      yesBtn.style.transform = "";
+      noBtn.textContent = "No 😢";
+
+      buttons.style.display = "flex";
+      message.innerHTML = "";
+      letterContainer.innerHTML = "";
+
+      letterBtn.textContent = "💌 Open My Love Letter";
+
+      showPage(questionPage);
+    });
+
   </script>
+
 </body>
 </html>
