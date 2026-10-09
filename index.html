@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>OMG You Said Yes! 💖</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(45deg, #ff6b6b, #feca57, #ff9ff3, #54a0ff);
+      background-size: 400% 400%;
+      animation: gradientShift 8s ease infinite;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      overflow: hidden;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .celebration {
+      text-align: center;
+      color: white;
+      animation: zoomIn 1s ease-out;
+    }
+
+    @keyframes zoomIn {
+      0% { transform: scale(0); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .title {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      animation: bounce 2s infinite;
+    }
+
+    .hearts {
+      font-size: 6rem;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .floating-heart {
+      position: absolute;
+      font-size: 2rem;
+      animation: float 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    #letterBtn {
+      background: #ff9a56;
+      color: white;
+      padding: 15px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 30px;
+      transition: all 0.3s ease;
+    }
+
+    #letterBtn:hover {
+      background: #ff8533;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    #homeBtn {
+      background: #54a0ff;
+      color: white;
+      padding: 12px 25px;
+      font-size: 16px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+
+    #homeBtn:hover {
+      background: #3742fa;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .love-letter {
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #ff4d6d;
+      border-radius: 15px;
+      padding: 25px;
+      margin-top: 20px;
+      font-style: italic;
+      color: #333;
+      animation: fadeIn 0.8s ease;
+      max-width: 400px;
+      text-align: left;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="celebration">
+    <div class="title">OMG YOU SAID YES!</div>
+    <div class="hearts">💖💕💖</div>
+    <button id="letterBtn">💌</button>
+    <button id="homeBtn">🏠</button>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    function createFloatingHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'floating-heart';
+      heart.textContent = ['💖', '💕', '💗', '💘'][Math.floor(Math.random() * 4)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDelay = Math.random() * 2 + 's';
+      document.body.appendChild(heart);
+      
+      setTimeout(() => heart.remove(), 3000);
+    }
+
+    // Create floating hearts continuously
+    setInterval(createFloatingHeart, 300);
+
+    // Love letter functionality
+    const letterBtn = document.getElementById("letterBtn");
+    const message = document.getElementById("message");
+
+    letterBtn.addEventListener("click", () => {
+      const loveMessage = `
+        <div class="love-letter">
+          Hey Love, 💕<br><br>
+          I just wanted to remind you how much you mean to me. 🌟<br><br>
+          Thank you for the laughs 😄, the quiet moments in between 🌙 and the late nights 🌃. No matter where life takes us 🛤️, you are always my favourite place to return to 🏠.<br><br>
+          I'm so grateful for you. Always 🙏<br><br>
+          I love you so much 💖
+        </div>
+      `;
+      message.innerHTML = loveMessage;
+    });
+
+    // Home button functionality
+    const homeBtn = document.getElementById("homeBtn");
+    homeBtn.addEventListener("click", () => {
+      window.location.href = 'velentine.html';
+    });
+  </script>
+</body>
+</html>
